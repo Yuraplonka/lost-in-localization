@@ -25,7 +25,7 @@ st.markdown("""
     /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
     div.stButton > button p {
         color: #000000 !important;       /* Black Text */
-        font-weight: 400 !important;     /* Max Bold */
+        font-weight: 600 !important;     /* Max Bold */
         font-size: 18px !important;
     }
 
@@ -109,7 +109,7 @@ if st.session_state.current_level < len(levels):
 else:
     # End of game screen
     st.title("JOB COMPLETE")
-    st.write(f"Final QA Score: {st.session_state.score} / {len(levels)}")
+    st.write(f"Final Score: {st.session_state.score} / {len(levels)}")
     
     if st.session_state.score == len(levels):
         st.balloons()
