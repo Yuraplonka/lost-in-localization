@@ -45,8 +45,11 @@ st.markdown("""
     div[data-testid="stAlert"] {
         height: 20px !important;         /* Fixed height to match buttons */
         padding: 0px 15px !important;    /* Zero vertical padding = No cutoff */
-        
-        /* Center the text vertically */
+    }
+
+    /* Force the text inside to center properly */
+    div[data-testid="stAlert"] > div {
+        height: 100% !important;
         display: flex !important;
         align-items: center !important;
     }
