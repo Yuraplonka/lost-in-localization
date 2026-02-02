@@ -14,22 +14,31 @@ st.markdown("""
         font-family: 'Courier New', Courier, monospace;
     }
     
-    /* BASE BUTTON STYLE */
+    /* 1. BUTTON CONTAINER (The Box) */
     div.stButton > button {
-        color: #000000 !important;       /* Force Text Black */
-        background-color: #00ff00 !important; /* Neon Green Background */
+        background-color: #00ff00 !important; /* Neon Green */
         border: 2px solid #004400 !important;
-        font-weight: 900 !important;     /* Extra Bold (900 is the max) */
         width: 100%;
         transition: all 0.2s ease;
     }
 
-    /* HOVER STYLE (Mouse over) */
+    /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
+    div.stButton > button p {
+        color: #000000 !important;       /* Black Text */
+        font-weight: 900 !important;     /* Max Bold */
+        font-size: 18px !important;
+    }
+
+    /* 3. HOVER STATE (Mouse Over) */
     div.stButton > button:hover {
-        background-color: #ffffff !important; /* Turns White on hover */
-        color: #000000 !important;            /* Text stays Black */
-        border: 2px solid #00ff00 !important; /* Border turns Neon Green */
-        transform: scale(1.02);               /* Slight pop-up effect */
+        background-color: #ffffff !important; /* Turns White */
+        border-color: #00ff00 !important;
+        transform: scale(1.02);
+    }
+
+    /* 4. HOVER TEXT - Ensures text stays black on white background */
+    div.stButton > button:hover p {
+        color: #000000 !important;
     }
     </style>
     """, unsafe_allow_html=True)
