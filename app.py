@@ -40,12 +40,6 @@ st.markdown("""
     div.stButton > button:hover p {
         color: #000000 !important;
     }
-    
-    /* FIX ALERT BOXES (Correct/Failed) */
-    div[data-testid="stAlert"] {
-        height: 30px !important;         /* Fixed height to match buttons */
-        padding: 0px 15px !important;    /* Zero vertical padding = No cutoff */
-    }
     </style>
     """, unsafe_allow_html=True)
 
