@@ -99,6 +99,11 @@ st.markdown("""
         display: flex !important;
         align-items: center !important;
     }
+    
+    /* HIDE 'Press Enter to apply' */
+    div[data-testid="InputInstructions"] > span:nth-child(1) {
+        visibility: hidden;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -150,7 +155,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 if st.session_state.current_level == 0 and not st.session_state.game_over:
     st.session_state.player_name = st.text_input("ENTER AGENT NAME (Optional):", 
                                                  value=st.session_state.player_name, 
-                                                 placeholder="Type name here...")
+                                                 placeholder="Type your name here...")
     st.markdown("<br>", unsafe_allow_html=True)
     
 # Check if the game is still going
