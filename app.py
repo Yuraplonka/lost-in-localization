@@ -13,12 +13,23 @@ st.markdown("""
         color: #00ff00;
         font-family: 'Courier New', Courier, monospace;
     }
+    
+    /* BASE BUTTON STYLE */
     div.stButton > button {
-        color: #0e1117;
-        background-color: #00ff00;
-        border: 2px solid #004400;
+        color: #000000 !important;       /* Force Text Black */
+        background-color: #00ff00 !important; /* Neon Green Background */
+        border: 2px solid #004400 !important;
+        font-weight: 900 !important;     /* Extra Bold (900 is the max) */
         width: 100%;
-        font-weight: bold;
+        transition: all 0.2s ease;
+    }
+
+    /* HOVER STYLE (Mouse over) */
+    div.stButton > button:hover {
+        background-color: #ffffff !important; /* Turns White on hover */
+        color: #000000 !important;            /* Text stays Black */
+        border: 2px solid #00ff00 !important; /* Border turns Neon Green */
+        transform: scale(1.02);               /* Slight pop-up effect */
     }
     </style>
     """, unsafe_allow_html=True)
