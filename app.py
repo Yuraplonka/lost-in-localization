@@ -93,6 +93,7 @@ if 'current_level' not in st.session_state:
 # --- TITLE DISPLAY ---
 st.title("LOST IN LOCALIZATION")
 st.write("System Alert: Translation Database Corrupted.")
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Check if the game is still going
 if st.session_state.current_level < len(levels):
