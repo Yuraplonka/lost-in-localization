@@ -220,6 +220,7 @@ else:
     elif st.session_state.score >= 3:
         st.warning(f"RANK: {final_rank}")
     else:
+        st.snow()
         st.error(f"RANK: {final_rank}")
 
     st.subheader("🏆 GLOBAL LEADERBOARD")
