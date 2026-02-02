@@ -43,7 +43,7 @@ st.markdown("""
     
     /* FORCE MAX HEIGHT ON RESULT BOXES */
     div[data-testid="stAlert"] {
-        max-height: 20px !important;     /* Limits height to match standard buttons */
+        height: 20px !important;     /* Limits height to match standard buttons */
     }
     </style>
     """, unsafe_allow_html=True)
