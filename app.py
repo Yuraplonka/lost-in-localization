@@ -40,6 +40,15 @@ st.markdown("""
     div.stButton > button:hover p {
         color: #000000 !important;
     }
+    
+    div[data-testid="stAlert"] {
+        padding: 10px !important;        /* Match button padding */
+        font-size: 18px !important;      /* Match button font size */
+        font-weight: 700 !important;     /* Match button bold */
+        line-height: 1.5 !important;     /* Fix vertical alignment */
+        border-radius: 5px !important;   
+        color: #000000 !important;       /* Force text black for readability */
+    }
     </style>
     """, unsafe_allow_html=True)
 
