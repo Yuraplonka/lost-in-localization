@@ -43,16 +43,18 @@ st.markdown("""
     
     /* FIX ALERT BOXES (Corrupted String & Failed/Success) */
     div[data-testid="stAlert"] {
-        padding: 20px !important;        /* Big padding to match button height */
-        font-size: 20px !important;      /* Larger text */
-        font-weight: 700 !important;     /* Bold text */
-        min-height: 65px !important;     /* FORCE same height as buttons */
+        padding: 15px !important;        /* Add padding */
+        min-height: 60px !important;     /* Force it to be TALL */
+        font-size: 20px !important;      /* Large text */
+        font-weight: 700 !important;     /* Bold */
         
-        /* This centers the text vertically so it looks professional */
-        display: flex !important;       
-        align-items: center !important; 
+        /* Flexbox allows us to center vertically */
+        display: flex !important;
+        align-items: center !important;  /* Center text vertically */
+        justify-content: center !important; /* Center text horizontally (Optional) */
         
-        border-radius: 5px !important;   /* Match button corners */
+        border-radius: 5px !important;
+        border: 2px solid #004400 !important; /* Add border to match theme */
     }
     
     /* Hides the small icon inside to save space and look cleaner */
