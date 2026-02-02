@@ -106,7 +106,7 @@ if st.session_state.current_level < len(levels):
     # LOOP THROUGH OPTIONS
     for i, option in enumerate(level_data['options']):
         # Create two columns: Left for Button (0.7), Right for Result (0.3)
-        col1, col2 = st.columns([0.7, 0.3])
+        col1, col2 = st.columns([0.8, 0.2])
         
         with col1:
             # We use 'key' to ensure every button is unique
