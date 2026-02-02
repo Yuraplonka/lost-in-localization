@@ -44,8 +44,6 @@ st.markdown("""
     /* FORCE MAX HEIGHT ON RESULT BOXES */
     div[data-testid="stAlert"] {
         max-height: 46px !important;     /* Limits height to match standard buttons */
-        padding: 5px 10px !important;    /* Reduces padding so text fits inside */
-        overflow: hidden !important;     /* Ensures nothing spills out */
     }
     </style>
     """, unsafe_allow_html=True)
