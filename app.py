@@ -25,7 +25,7 @@ st.markdown("""
     /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
     div.stButton > button p {
         color: #000000 !important;       /* Black Text */
-        font-weight: 900 !important;     /* Max Bold */
+        font-weight: 400 !important;     /* Max Bold */
         font-size: 18px !important;
     }
 
