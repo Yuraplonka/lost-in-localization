@@ -78,9 +78,9 @@ levels = [
         "correct": "Why so serious?"
     },
      {
-        "glitch": "End of the Game.",
-        "options": ["Game Over.", "Match Finished.", "Stop Playing."],
-        "correct": "Game Over."
+        "glitch": "Slumber is prohibited. Entities are in proximity.",
+        "options": ["Sleeping is not allowed in here.", "Sleeping is impossible when enemies are too close to bed.", "You may not rest now, there are monsters nearby."],
+        "correct": "You may not rest now, there are monsters nearby."
     }
 ]
 
