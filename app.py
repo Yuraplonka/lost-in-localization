@@ -1,79 +1,110 @@
 import streamlit as st
 import time
 
-# --- PAGE CONFIGURATION ---
-# This sets the tab name in the browser
+# --- 1. PAGE SETUP ---
 st.set_page_config(page_title="Lost in Localization", page_icon="🎮")
 
-# --- CUSTOM DESIGN ---
+# --- 2. THE VISUAL STYLE (CSS) ---
 st.markdown("""
     <style>
+    /* MAIN BACKGROUND: Deep Black */
     .stApp {
         background-color: #0e1117;
-        color: #00ff00;
         font-family: 'Courier New', Courier, monospace;
     }
+
+    /* HEADERS: Neon Green */
+    h1, h2, h3 {
+        color: #00ff00 !important;
+        text-shadow: 0px 0px 5px #003300;
+    }
     
-    /* 1. BUTTON CONTAINER (The Box) */
+    /* TEXT: Standard Console Text */
+    p, label {
+        color: #ccffcc;
+        font-size: 16px;
+    }
+
+    /* --- THE "CORRUPTED" BOX --- */
+    /* This targets the specific error box style */
+    div[data-testid="stAlert"] {
+        background-color: #220000 !important; /* Dark Red Background */
+        border: 2px solid #ff0000 !important; /* Bright Red Border */
+        color: #ffcccc !important;            /* Light Red Text */
+        padding: 20px !important;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 18px !important;
+    }
+    /* Fix for the icon/text inside alert boxes */
+    div[data-testid="stAlert"] > div {
+        display: flex !important;
+        align-items: center;
+    }
+
+    /* --- THE BUTTONS --- */
     div.stButton > button {
         background-color: #00ff00 !important; /* Neon Green */
         border: 2px solid #004400 !important;
+        color: #000000 !important;            /* Black Text */
+        font-weight: 800 !important;          /* Extra Bold */
+        font-size: 18px !important;
+        height: 60px !important;              /* FIXED HEIGHT */
         width: 100%;
-        transition: all 0.2s ease;
+        border-radius: 5px;
+        transition: transform 0.1s;
     }
-
-    /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
+    
+    /* FORCE TEXT COLOR INSIDE BUTTONS */
     div.stButton > button p {
-        color: #000000 !important;       /* Black Text */
-        font-weight: 600 !important;     /* Max Bold */
+        color: #000000 !important;
         font-size: 18px !important;
     }
 
-    /* 3. HOVER STATE (Mouse Over) */
+    /* HOVER EFFECT */
     div.stButton > button:hover {
-        background-color: #ffffff !important; /* Turns White */
+        background-color: #ffffff !important; /* White */
         border-color: #00ff00 !important;
         transform: scale(1.02);
     }
-
-    /* 4. HOVER TEXT - Ensures text stays black on white background */
     div.stButton > button:hover p {
         color: #000000 !important;
     }
-    
-    /* FIX ALERT BOXES (Corrupted String & Failed/Success) */
-    div[data-testid="stAlert"] {
-        /* 1. FORCE HEIGHT & PADDING TO MATCH BUTTONS */
-        min-height: 50px !important;     
-        padding: 10px 15px !important;   
-        
-        /* 2. CENTER TEXT VERTICALLY */
-        display: flex !important;
-        align-items: center !important;
-        
-        /* 3. FONT STYLING */
-        font-size: 18px !important;
-        font-weight: 700 !important;
-        border-radius: 5px !important;
+
+    /* --- CUSTOM RESULT BOX (The box that appears next to the button) --- */
+    .result-box-success {
+        background-color: #00ff00;
+        color: black;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        height: 60px; /* MATCH BUTTON HEIGHT */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        border: 2px solid #004400;
+    }
+    .result-box-fail {
+        background-color: #ff0000;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        height: 60px; /* MATCH BUTTON HEIGHT */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        border: 2px solid #550000;
     }
 
-    /* 4. FIX THE TEXT DISAPPEARING (Crucial Step) */
-    /* This ensures the internal text container is visible and centered */
-    div[data-testid="stAlert"] > div {
-        display: flex !important;
-        align-items: center !important;
-        width: 100% !important;
-    }
-    
-    /* 5. REMOVE DEFAULT SPACING */
-    div[data-testid="stAlert"] p {
-        margin: 0px !important;
-        padding: 0px !important;
-    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE GAME DATA ---
+# --- 3. THE DATA ---
 levels = [
     {
         "glitch": "May the power accompany you.",
@@ -102,60 +133,81 @@ levels = [
     }
 ]
 
-# --- GAME LOGIC ---
+# --- 4. GAME LOGIC ---
 if 'score' not in st.session_state:
     st.session_state.score = 0
 if 'current_level' not in st.session_state:
     st.session_state.current_level = 0
+if 'feedback' not in st.session_state:
+    st.session_state.feedback = None  # To store "Success" or "Fail" state
 
-# --- TITLE DISPLAY ---
+# Header
 st.title("LOST IN LOCALIZATION")
 st.write("System Alert: Translation Database Corrupted.")
+st.markdown("---")
 
-# Check if the game is still going
+# Main Game Loop
 if st.session_state.current_level < len(levels):
     level_data = levels[st.session_state.current_level]
     
-    st.subheader(f"Case #{st.session_state.current_level + 1}")
+    st.subheader(f"CASE #{st.session_state.current_level + 1}")
+    
+    # The Corrupted String Display
     st.error(f'CORRUPTED STRING: "{level_data["glitch"]}"')
     
-    st.write("Select the correct localized patch:")
+    st.write("Select the localized patch:")
     
-    # LOOP THROUGH OPTIONS
+    # Button Loop
     for i, option in enumerate(level_data['options']):
-        # Create two columns: Left for Button (0.7), Right for Result (0.3)
-        col1, col2 = st.columns([0.7, 0.3])
+        # Create 2 Columns: Button (75%) | Result (25%)
+        col1, col2 = st.columns([0.75, 0.25])
         
         with col1:
-            # We use 'key' to ensure every button is unique
-            clicked = st.button(option, key=f"btn_{st.session_state.current_level}_{i}")
-            
-        if clicked:
-            # If clicked, show the result in the RIGHT column (col2)
-            with col2:
-                if option == level_data['correct']:
-                    st.success("✅ CORRECT")
-                    time.sleep(1) # Let them see it for 1 second
-                    st.session_state.score += 1
-                    st.session_state.current_level += 1
-                    st.rerun()
-                else:
-                    st.error("❌ FAILED")
-                    time.sleep(1) # Let them see it for 1 second
-                    st.session_state.current_level += 1
-                    st.rerun()
+            # Unique key for every button
+            btn = st.button(option, key=f"btn_{st.session_state.current_level}_{i}")
+        
+        if btn:
+            if option == level_data['correct']:
+                # Show success in the right column
+                with col2:
+                    st.markdown('<div class="result-box-success">✅ CORRECT</div>', unsafe_allow_html=True)
+                time.sleep(1)
+                st.session_state.score += 1
+                st.session_state.current_level += 1
+                st.rerun()
+            else:
+                # Show failure in the right column
+                with col2:
+                    st.markdown('<div class="result-box-fail">❌ FAILED</div>', unsafe_allow_html=True)
+                time.sleep(1)
+                st.session_state.current_level += 1
+                st.rerun()
 
 else:
-    # End of game screen
+    # --- END SCREEN ---
     st.title("JOB COMPLETE")
-    st.write(f"Final Score: {st.session_state.score} / {len(levels)}")
+    st.markdown("---")
     
+    # Calculate Rank
     if st.session_state.score == len(levels):
+        rank = "MASTER LOCALIZER"
+        color = "#00ff00"
         st.balloons()
-        st.success("Rank: MASTER LOCALIZER")
+    elif st.session_state.score >= 3:
+        rank = "JUNIOR TRANSLATOR"
+        color = "orange"
     else:
-        st.warning("Rank: JUNIOR TRANSLATOR")
-        
+        rank = "GOOGLE TRANSLATE BOT"
+        color = "red"
+
+    st.markdown(f"""
+    <div style="background-color: #111; padding: 20px; border: 2px solid {color}; text-align: center; border-radius: 10px;">
+        <h2 style="color: {color} !important; margin: 0;">FINAL SCORE: {st.session_state.score} / {len(levels)}</h2>
+        <h3 style="color: white !important; margin-top: 10px;">RANK: {rank}</h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.write("")
     if st.button("REBOOT SYSTEM"):
         st.session_state.score = 0
         st.session_state.current_level = 0
