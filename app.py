@@ -1,9 +1,54 @@
 import streamlit as st
 import time
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 # --- PAGE CONFIGURATION ---
 # This sets the tab name in the browser
 st.set_page_config(page_title="Lost in Localization", page_icon="🎮")
+
+# --- GOOGLE SHEETS SETUP ---
+SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+def get_google_sheet():
+    """Connects to Google Sheets using Streamlit Secrets."""
+    try:
+        # Load credentials from Streamlit Secrets
+        creds_dict = dict(st.secrets["gcp_service_account"])
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
+        client = gspread.authorize(creds)
+        
+        # OPEN THE SHEET BY NAME - CHANGE THIS TO YOUR EXACT SHEET NAME
+        sheet = client.open("Localization Leaderboard").sheet1
+        return sheet
+    except Exception as e:
+        st.error(f"Database Error: {e}")
+        return None
+
+def save_score(name, score):
+    """Appends a row to Google Sheets."""
+    sheet = get_google_sheet()
+    if sheet:
+        if not name or name.strip() == "":
+            name = "Unknown Agent"
+        sheet.append_row([name, score])
+
+def get_top_scores():
+    """Reads all records from Google Sheets and sorts them."""
+    sheet = get_google_sheet()
+    if not sheet:
+        return []
+
+    try:
+        # Get all records
+        data = sheet.get_all_records()
+        
+        # Sort by Score (assuming column name is 'Score')
+        # We use a safe sort just in case of bad data
+        sorted_data = sorted(data, key=lambda x: int(x['Score']) if str(x['Score']).isdigit() else 0, reverse=True)
+        return sorted_data[:10]
+    except:
+        return []
 
 # --- CUSTOM DESIGN ---
 st.markdown("""
@@ -79,7 +124,7 @@ levels = [
     },
      {
         "glitch": "Slumber is prohibited. Entities are in proximity.",
-        "options": ["Sleeping is not allowed in here.", "Sleeping is impossible when enemies are too close to bed.", "You may not rest now, there are monsters nearby."],
+        "options": ["Sleeping is not allowed in here.", "Enemies are too close to bed to lay down.", "You may not rest now, there are monsters nearby."],
         "correct": "You may not rest now, there are monsters nearby."
     }
 ]
@@ -89,12 +134,23 @@ if 'score' not in st.session_state:
     st.session_state.score = 0
 if 'current_level' not in st.session_state:
     st.session_state.current_level = 0
+if 'game_over' not in st.session_state:
+    st.session_state.game_over = False
+if 'player_name' not in st.session_state:
+    st.session_state.player_name = ""
 
 # --- TITLE DISPLAY ---
 st.title("LOST IN LOCALIZATION")
 st.write("System Alert: Translation Database Corrupted.")
 st.markdown("<br>", unsafe_allow_html=True)
 
+# --- ASK FOR NAME (Only at start) ---
+if st.session_state.current_level == 0 and not st.session_state.game_over:
+    st.session_state.player_name = st.text_input("ENTER AGENT NAME (Optional):", 
+                                                 value=st.session_state.player_name, 
+                                                 placeholder="Type name here...")
+    st.markdown("<br>", unsafe_allow_html=True)
+    
 # Check if the game is still going
 if st.session_state.current_level < len(levels):
     level_data = levels[st.session_state.current_level]
@@ -129,17 +185,38 @@ if st.session_state.current_level < len(levels):
                     st.rerun()
 
 else:
-    # End of game screen
     st.title("JOB COMPLETE")
     st.write(f"Final Score: {st.session_state.score} / {len(levels)}")
     
+    # SAVE SCORE TO GOOGLE SHEETS
+    if not st.session_state.game_over:
+        save_score(st.session_state.player_name, st.session_state.score)
+        st.session_state.game_over = True
+    
     if st.session_state.score == len(levels):
         st.balloons()
-        st.success("Rank: MASTER LOCALIZER")
+        st.success("RANK: MASTER LOCALIZER")
+    elif st.session_state.score >= 3:
+        st.warning("RANK: JUNIOR TRANSLATOR")
     else:
-        st.warning("Rank: JUNIOR TRANSLATOR")
+        st.error("RANK: GOOGLE TRANSLATE BOT")
+
+    st.markdown("---")
+    st.subheader("🏆 GLOBAL LEADERBOARD")
+    
+    # LOAD SCORES FROM GOOGLE SHEETS
+    top_scores = get_top_scores()
+    
+    if top_scores:
+        for rank, agent in enumerate(top_scores):
+            st.write(f"**#{rank + 1} {agent['Player']}** - {agent['Score']} pts")
+    else:
+        st.write("Connecting to Global Database...")
         
+    st.markdown("<br>", unsafe_allow_html=True)
     if st.button("REBOOT SYSTEM"):
         st.session_state.score = 0
         st.session_state.current_level = 0
+        st.session_state.game_over = False
+        st.session_state.player_name = "" 
         st.rerun()
