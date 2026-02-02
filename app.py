@@ -81,7 +81,6 @@ if 'current_level' not in st.session_state:
 # --- TITLE DISPLAY ---
 st.title("LOST IN LOCALIZATION")
 st.write("System Alert: Translation Database Corrupted.")
-st.markdown("---")
 
 # Check if the game is still going
 if st.session_state.current_level < len(levels):
@@ -91,17 +90,24 @@ if st.session_state.current_level < len(levels):
     st.error(f'CORRUPTED STRING: "{level_data["glitch"]}"')
     
     st.write("Select the correct localized patch:")
+
+    # 1. CREATE A PLACEHOLDER FOR THE MESSAGE (This reserves space at the bottom)
+    feedback_box = st.empty()
     
+    # 2. CREATE THE BUTTONS
+    # We use a loop to display buttons, but we send messages to 'feedback_box'
     for option in level_data['options']:
         if st.button(option):
             if option == level_data['correct']:
-                st.success("✅ PATCH SUCCESSFUL!")
+                # Send success message to the empty box below
+                feedback_box.success("✅ PATCH SUCCESSFUL!") 
                 time.sleep(1)
                 st.session_state.score += 1
                 st.session_state.current_level += 1
                 st.rerun()
             else:
-                st.error("❌ PATCH FAILED.")
+                # Send error message to the empty box below
+                feedback_box.error("❌ PATCH FAILED.") 
                 time.sleep(1)
                 st.session_state.current_level += 1
                 st.rerun()
