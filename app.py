@@ -90,27 +90,30 @@ if st.session_state.current_level < len(levels):
     st.error(f'CORRUPTED STRING: "{level_data["glitch"]}"')
     
     st.write("Select the correct localized patch:")
-
-    # 1. CREATE A PLACEHOLDER FOR THE MESSAGE (This reserves space at the bottom)
-    feedback_box = st.empty()
     
-    # 2. CREATE THE BUTTONS
-    # We use a loop to display buttons, but we send messages to 'feedback_box'
-    for option in level_data['options']:
-        if st.button(option):
-            if option == level_data['correct']:
-                # Send success message to the empty box below
-                feedback_box.success("✅ PATCH SUCCESSFUL!") 
-                time.sleep(1)
-                st.session_state.score += 1
-                st.session_state.current_level += 1
-                st.rerun()
-            else:
-                # Send error message to the empty box below
-                feedback_box.error("❌ PATCH FAILED.") 
-                time.sleep(1)
-                st.session_state.current_level += 1
-                st.rerun()
+    # LOOP THROUGH OPTIONS
+    for i, option in enumerate(level_data['options']):
+        # Create two columns: Left for Button (0.7), Right for Result (0.3)
+        col1, col2 = st.columns([0.7, 0.3])
+        
+        with col1:
+            # We use 'key' to ensure every button is unique
+            clicked = st.button(option, key=f"btn_{st.session_state.current_level}_{i}")
+            
+        if clicked:
+            # If clicked, show the result in the RIGHT column (col2)
+            with col2:
+                if option == level_data['correct']:
+                    st.success("✅ CORRECT")
+                    time.sleep(1) # Let them see it for 1 second
+                    st.session_state.score += 1
+                    st.session_state.current_level += 1
+                    st.rerun()
+                else:
+                    st.error("❌ FAILED")
+                    time.sleep(1) # Let them see it for 1 second
+                    st.session_state.current_level += 1
+                    st.rerun()
 
 else:
     # End of game screen
