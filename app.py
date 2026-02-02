@@ -200,13 +200,27 @@ else:
         save_score(st.session_state.player_name, st.session_state.score)
         st.session_state.game_over = True
     
-    if st.session_state.score == len(levels):
+    # --- RANK LOGIC ---
+    rank_titles = [
+        "CORRUPTED SAVE FILE",       # Score 0
+        "GOOGLE TRANSLATE BOT",      # Score 1
+        "AUTO-CORRECT VICTIM",       # Score 2
+        "JUNIOR TRANSLATOR",         # Score 3
+        "SENIOR EDITOR",             # Score 4
+        "MASTER LOCALIZER"           # Score 5
+    ]
+    
+    # Get Rank safely
+    final_rank = rank_titles[st.session_state.score] if st.session_state.score < len(rank_titles) else rank_titles[-1]
+
+    # Display Rank with Colors
+    if st.session_state.score == 5:
         st.balloons()
-        st.success("RANK: MASTER LOCALIZER")
+        st.success(f"RANK: {final_rank}")
     elif st.session_state.score >= 3:
-        st.warning("RANK: JUNIOR TRANSLATOR")
+        st.warning(f"RANK: {final_rank}")
     else:
-        st.error("RANK: GOOGLE TRANSLATE BOT")
+        st.error(f"RANK: {final_rank}")
 
     st.subheader("🏆 GLOBAL LEADERBOARD")
     
