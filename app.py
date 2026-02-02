@@ -41,9 +41,21 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* FORCE MAX HEIGHT ON RESULT BOXES */
+    /* FIX ALERT BOXES (Correct/Failed) */
     div[data-testid="stAlert"] {
-        height: 20px !important;     /* Limits height to match standard buttons */
+        height: 55px !important;         /* Fixed height to match buttons */
+        padding: 0px 15px !important;    /* Zero vertical padding = No cutoff */
+        
+        /* Center the text vertically */
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Force the text inside to center properly */
+    div[data-testid="stAlert"] > div {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
     }
     </style>
     """, unsafe_allow_html=True)
