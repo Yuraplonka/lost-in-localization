@@ -220,10 +220,9 @@ else:
     elif st.session_state.score >= 3:
         st.warning(f"RANK: {final_rank}")
     else:
-        st.snow()
         st.error(f"RANK: {final_rank}")
 
-    st.subheader("🏆 GLOBAL LEADERBOARD")
+    st.subheader("🏆 SCHOOL LEADERBOARD")
     
     # LOAD SCORES FROM GOOGLE SHEETS
     top_scores = get_top_scores()
@@ -232,7 +231,7 @@ else:
         for rank, agent in enumerate(top_scores):
             st.write(f"**#{rank + 1} {agent['Player']}** - {agent['Score']} pts")
     else:
-        st.write("Connecting to Global Database...")
+        st.write("Connecting to the Database...")
         
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("REBOOT SYSTEM"):
