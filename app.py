@@ -43,7 +43,7 @@ st.markdown("""
     
     /* FIX ALERT BOXES (Correct/Failed) */
     div[data-testid="stAlert"] {
-        height: 30px !important;         /* Fixed height to match buttons */
+        height: 40px !important;         /* Fixed height to match buttons */
     }
 
     /* Force the text inside to center properly */
