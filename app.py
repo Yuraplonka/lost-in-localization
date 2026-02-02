@@ -41,17 +41,23 @@ st.markdown("""
         color: #000000 !important;
     }
     
+    /* FIX ALERT BOXES (Corrupted String & Failed/Success) */
     div[data-testid="stAlert"] {
-        padding: 10px !important;        /* Match button padding */
-        font-size: 18px !important;      /* Match button font size */
-        font-weight: 700 !important;     /* Match button bold */
-        line-height: 1.5 !important;     /* Fix vertical alignment */
-        border-radius: 5px !important;   
-        color: #000000 !important;       /* Force text black for readability */
+        padding: 20px !important;        /* Big padding to match button height */
+        font-size: 20px !important;      /* Larger text */
+        font-weight: 700 !important;     /* Bold text */
+        min-height: 65px !important;     /* FORCE same height as buttons */
+        
+        /* This centers the text vertically so it looks professional */
+        display: flex !important;       
+        align-items: center !important; 
+        
+        border-radius: 5px !important;   /* Match button corners */
     }
     
-    div[data-testid="stAlert"] > div {
-        padding: 0px !important;
+    /* Hides the small icon inside to save space and look cleaner */
+    div[data-testid="stAlert"] > div:first-child {
+        display: none; 
     }
     </style>
     """, unsafe_allow_html=True)
