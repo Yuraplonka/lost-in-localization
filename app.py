@@ -43,29 +43,32 @@ st.markdown("""
     
     /* FIX ALERT BOXES (Corrupted String & Failed/Success) */
     div[data-testid="stAlert"] {
-        padding: 15px !important;
-        min-height: 65px !important;     /* Forces the height to match buttons */
-        font-size: 20px !important;
-        font-weight: 700 !important;
+        /* 1. FORCE HEIGHT & PADDING TO MATCH BUTTONS */
+        min-height: 50px !important;     
+        padding: 10px 15px !important;   
         
-        /* Layout formatting */
+        /* 2. CENTER TEXT VERTICALLY */
         display: flex !important;
-        flex-direction: column !important; /* Keeps content stacked safely */
-        justify-content: center !important; /* Centers vertically */
+        align-items: center !important;
         
+        /* 3. FONT STYLING */
+        font-size: 18px !important;
+        font-weight: 700 !important;
         border-radius: 5px !important;
-        border: 2px solid #8B0000 !important; /* Dark red border for errors */
-        background-color: #330000 !important; /* Dark red background */
-        color: #ffcccc !important;            /* Light red text */
     }
-    
-    /* This ensures the text inside doesn't have extra margins pushing it weirdly */
+
+    /* 4. FIX THE TEXT DISAPPEARING (Crucial Step) */
+    /* This ensures the internal text container is visible and centered */
     div[data-testid="stAlert"] > div {
-        display: block !important; /* Ensures text is VISIBLE */
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
     }
     
+    /* 5. REMOVE DEFAULT SPACING */
     div[data-testid="stAlert"] p {
-        margin: 0px !important; /* Removes default paragraph spacing */
+        margin: 0px !important;
+        padding: 0px !important;
     }
     </style>
     """, unsafe_allow_html=True)
