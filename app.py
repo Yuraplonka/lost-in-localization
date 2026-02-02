@@ -26,11 +26,13 @@ def get_google_sheet():
         return None
 
 def save_score(name, score):
-    """Appends a row to Google Sheets."""
+    """Appends a row to Google Sheets ONLY if a name is provided."""
+    # If name is empty or just spaces, DO NOT SAVE.
+    if not name or name.strip() == "":
+        return 
+        
     sheet = get_google_sheet()
     if sheet:
-        if not name or name.strip() == "":
-            name = "Unknown Agent"
         sheet.append_row([name, score])
 
 def get_top_scores():
@@ -201,7 +203,6 @@ else:
     else:
         st.error("RANK: GOOGLE TRANSLATE BOT")
 
-    st.markdown("---")
     st.subheader("🏆 GLOBAL LEADERBOARD")
     
     # LOAD SCORES FROM GOOGLE SHEETS
