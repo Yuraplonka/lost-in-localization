@@ -6,22 +6,38 @@ import time
 st.set_page_config(page_title="Lost in Localization", page_icon="🎮")
 
 # --- CUSTOM DESIGN ---
-st.markdown(
+st.markdown("""
     <style>
+    /* Main Background */
     .stApp {
         background-color: #0e1117;
         color: #00ff00;
         font-family: 'Courier New', Courier, monospace;
     }
+    
+    /* BUTTON STYLING */
     div.stButton > button {
-        color: #0e1117;
-        background-color: #00ff00;
+        background-color: #00ff00 !important; /* Neon Green Background */
         border: 2px solid #004400;
+        border-radius: 5px;
+        padding: 10px;
         width: 100%;
-        font-weight: bold;
+    }
+
+    /* FORCE TEXT COLOR TO BLACK */
+    /* This selects every element inside the button to ensure it turns black */
+    div.stButton > button * {
+        color: #000000 !important;
+        font-weight: 900 !important; /* Extra Bold */
+        font-size: 18px !important;
+    }
+
+    /* Subheader color */
+    h3 {
+        color: #00ff00 !important;
     }
     </style>
-    , unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 # --- THE GAME DATA ---
 levels = [
