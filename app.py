@@ -49,6 +49,10 @@ st.markdown("""
         border-radius: 5px !important;   
         color: #000000 !important;       /* Force text black for readability */
     }
+    
+    div[data-testid="stAlert"] > div {
+        padding: 0px !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
