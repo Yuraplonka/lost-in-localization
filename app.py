@@ -2,45 +2,26 @@ import streamlit as st
 import time
 
 # --- PAGE CONFIGURATION ---
+# This sets the tab name in the browser
 st.set_page_config(page_title="Lost in Localization", page_icon="🎮")
 
 # --- CUSTOM DESIGN ---
-# I changed the CSS below to force the button text to be BLACK.
-st.markdown("""
+st.markdown(
     <style>
-    /* Main Background */
     .stApp {
         background-color: #0e1117;
         color: #00ff00;
         font-family: 'Courier New', Courier, monospace;
     }
-    
-    /* Buttons */
     div.stButton > button {
-        color: #000000 !important; /* Force text to be BLACK */
-        background-color: #00ff00 !important; /* Neon Green Background */
+        color: #0e1117;
+        background-color: #00ff00;
         border: 2px solid #004400;
-        border-radius: 5px;
-        font-weight: 900 !important; /* Extra Bold */
-        font-size: 18px !important;
-        padding: 10px;
         width: 100%;
-        transition: all 0.3s ease;
-    }
-    
-    /* Button Hover Effect (Optional: makes it white on hover) */
-    div.stButton > button:hover {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        border: 2px solid #00ff00;
-    }
-
-    /* Subheader/Mission text color */
-    h3 {
-        color: #00ff00 !important;
+        font-weight: bold;
     }
     </style>
-    """, unsafe_allow_html=True)
+    , unsafe_allow_html=True)
 
 # --- THE GAME DATA ---
 levels = [
@@ -86,12 +67,8 @@ st.markdown("---")
 if st.session_state.current_level < len(levels):
     level_data = levels[st.session_state.current_level]
     
-    # CHANGED "Ticket" to "Mission"
     st.subheader(f"Case #{st.session_state.current_level + 1}")
-    
-    # I added a larger font size for the glitch text so it stands out
-    st.markdown(f"**CORRUPTED STRING:**") 
-    st.error(f'"{level_data["glitch"]}"')
+    st.error(f'CORRUPTED STRING: "{level_data["glitch"]}"')
     
     st.write("Select the correct localized patch:")
     
@@ -112,16 +89,13 @@ if st.session_state.current_level < len(levels):
 else:
     # End of game screen
     st.title("JOB COMPLETE")
-    st.markdown("---")
     st.write(f"Final QA Score: {st.session_state.score} / {len(levels)}")
     
     if st.session_state.score == len(levels):
         st.balloons()
-        st.success("RANK: MASTER LOCALIZER")
-    elif st.session_state.score >= 3:
-        st.warning("RANK: JUNIOR TRANSLATOR")
+        st.success("Rank: MASTER LOCALIZER")
     else:
-        st.error("RANK: GOOGLE TRANSLATE BOT")
+        st.warning("Rank: JUNIOR TRANSLATOR")
         
     if st.button("REBOOT SYSTEM"):
         st.session_state.score = 0
