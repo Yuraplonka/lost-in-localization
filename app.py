@@ -43,23 +43,29 @@ st.markdown("""
     
     /* FIX ALERT BOXES (Corrupted String & Failed/Success) */
     div[data-testid="stAlert"] {
-        padding: 15px !important;        /* Add padding */
-        min-height: 60px !important;     /* Force it to be TALL */
-        font-size: 20px !important;      /* Large text */
-        font-weight: 700 !important;     /* Bold */
+        padding: 15px !important;
+        min-height: 65px !important;     /* Forces the height to match buttons */
+        font-size: 20px !important;
+        font-weight: 700 !important;
         
-        /* Flexbox allows us to center vertically */
+        /* Layout formatting */
         display: flex !important;
-        align-items: center !important;  /* Center text vertically */
-        justify-content: center !important; /* Center text horizontally (Optional) */
+        flex-direction: column !important; /* Keeps content stacked safely */
+        justify-content: center !important; /* Centers vertically */
         
         border-radius: 5px !important;
-        border: 2px solid #004400 !important; /* Add border to match theme */
+        border: 2px solid #8B0000 !important; /* Dark red border for errors */
+        background-color: #330000 !important; /* Dark red background */
+        color: #ffcccc !important;            /* Light red text */
     }
     
-    /* Hides the small icon inside to save space and look cleaner */
-    div[data-testid="stAlert"] > div:first-child {
-        display: none; 
+    /* This ensures the text inside doesn't have extra margins pushing it weirdly */
+    div[data-testid="stAlert"] > div {
+        display: block !important; /* Ensures text is VISIBLE */
+    }
+    
+    div[data-testid="stAlert"] p {
+        margin: 0px !important; /* Removes default paragraph spacing */
     }
     </style>
     """, unsafe_allow_html=True)
