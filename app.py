@@ -294,11 +294,11 @@ else:
     
     # Get Rank safely
     final_rank = rank_titles[st.session_state.score] if st.session_state.score < len(rank_titles) else rank_titles[-1]
-    st.markdown("<br>", unsafe_allow_html=True)
+    
     # Display Rank with Colors
     if st.session_state.score == 5:
-        st.balloons()
         st.success(f"RANK: {final_rank}")
+        st.balloons()
     elif st.session_state.score >= 3:
         st.warning(f"RANK: {final_rank}")
     else:
