@@ -55,13 +55,10 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* --- 1. HIDE THE WHITE BOX (Visual Fix) --- */
-    /* We cannot stop the bounce on Streamlit Cloud, but we can paint the background black */
-    :root {
-        background-color: #0e1117;
-    }
-    html, body {
-        background-color: #0e1117 !important; 
+    /* 1. FORCE BLACK BACKGROUND */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        background-color: #0e1117 !important;
+        overscroll-behavior: none; 
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
@@ -182,6 +179,34 @@ st.markdown("""
     .stButton {
         margin-bottom: 0px !important;
     }
+    
+    /* --- DUAL MESSAGE LOGIC (New) --- */
+    
+    /* 1. Hide Mobile Message on PC (Default) */
+    .mobile-result { display: none; }
+
+    /* 2. Mobile Logic (Only on Phone) */
+    @media only screen and (max-width: 600px) {
+        
+        /* Show the Custom Mobile Message */
+        .mobile-result {
+            display: block !important;
+            margin-top: 5px;   /* Small gap under button */
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        .mobile-result.success { background-color: #28a745; } /* Green */
+        .mobile-result.error { background-color: #dc3545; }   /* Red */
+
+        /* Hide the PC Message (The one in the side column) */
+        /* This prevents the "gigantic margin" issue by removing the PC alert completely */
+        div[data-testid="column"] div[data-testid="stAlert"] {
+            display: none !important;
+        }
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -253,27 +278,38 @@ if st.session_state.current_level < len(levels):
     
     # LOOP THROUGH OPTIONS
     for i, option in enumerate(level_data['options']):
-        # Create two columns: Left for Button (0.7), Right for Result (0.3)
+        # Create columns (PC Layout)
         col1, col2 = st.columns([0.8, 0.2])
         
         with col1:
-            # We use 'key' to ensure every button is unique
             clicked = st.button(option, key=f"btn_{st.session_state.current_level}_{i}")
+            # Placeholder for Mobile Message (Sits right under the button)
+            mobile_msg_container = st.empty()
             
         if clicked:
-            # If clicked, show the result in the RIGHT column (col2)
-            with col2:
-                if option == level_data['correct']:
+            if option == level_data['correct']:
+                # 1. PC MESSAGE (Standard Streamlit Success)
+                with col2:
                     st.success("✅ CORRECT")
-                    time.sleep(1) # Let them see it for 1 second
-                    st.session_state.score += 1
-                    st.session_state.current_level += 1
-                    st.rerun()
-                else:
+                
+                # 2. MOBILE MESSAGE (Custom HTML - Visible only on Mobile)
+                mobile_msg_container.markdown('<div class="mobile-result success">✅ CORRECT</div>', unsafe_allow_html=True)
+                
+                time.sleep(1)
+                st.session_state.score += 1
+                st.session_state.current_level += 1
+                st.rerun()
+            else:
+                # 1. PC MESSAGE (Standard Streamlit Error)
+                with col2:
                     st.error("❌ FAILED")
-                    time.sleep(1) # Let them see it for 1 second
-                    st.session_state.current_level += 1
-                    st.rerun()
+                
+                # 2. MOBILE MESSAGE (Custom HTML - Visible only on Mobile)
+                mobile_msg_container.markdown('<div class="mobile-result error">❌ FAILED</div>', unsafe_allow_html=True)
+                
+                time.sleep(1)
+                st.session_state.current_level += 1
+                st.rerun(
 
 else:
     st.title("JOB COMPLETE")
