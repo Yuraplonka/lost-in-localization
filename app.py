@@ -56,7 +56,7 @@ def get_top_scores():
 st.markdown("""
     <style>
     /* 1. FORCE BLACK BACKGROUND (Fixes White Box on Mobile) */
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"] {
         background-color: #0e1117 !important;
     }
 
@@ -138,7 +138,7 @@ st.markdown("""
         padding-bottom: 0px !important;
     }
     div[data-testid="stVerticalBlock"] {
-        gap: 0.6rem !important; 
+        gap: 10px !important; 
     }
 
     /* 5. MOBILE SPECIFIC TWEAKS */
@@ -146,6 +146,11 @@ st.markdown("""
         div.stButton > button {
             margin-bottom: 4px !important; /* Removes the 5px margin on small screens for tighter fit */
         }
+    }
+    
+    /* This removes the default bottom margin */
+    .stButton {
+        margin-bottom: 0px !important;
     }
     </style>
     """, unsafe_allow_html=True)
