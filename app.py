@@ -274,7 +274,6 @@ if st.session_state.current_level < len(levels):
 
 else:
     st.title("JOB COMPLETE")
-    st.markdown("<br>", unsafe_allow_html=True)
     st.write(f"Final Score: {st.session_state.score} / {len(levels)}")
     
     # SAVE SCORE TO GOOGLE SHEETS
@@ -295,7 +294,7 @@ else:
     
     # Get Rank safely
     final_rank = rank_titles[st.session_state.score] if st.session_state.score < len(rank_titles) else rank_titles[-1]
-
+    st.markdown("<br>", unsafe_allow_html=True)
     # Display Rank with Colors
     if st.session_state.score == 5:
         st.balloons()
