@@ -73,7 +73,7 @@ st.markdown("""
         border: 2px solid #004400 !important;
         width: 100%;
         transition: all 0.2s ease;
-        margin-bottom: 5px !important; /* Reduces gap between buttons */
+        margin-bottom: 8px !important; /* Reduces gap between buttons */
     }
 
     /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
@@ -138,13 +138,13 @@ st.markdown("""
         padding-bottom: 0px !important;
     }
     div[data-testid="stVerticalBlock"] {
-        gap: 0.2rem !important; 
+        gap: 0.6rem !important; 
     }
 
     /* 5. MOBILE SPECIFIC TWEAKS */
     @media only screen and (max-width: 600px) {
         div.stButton > button {
-            margin-bottom: 0px !important; /* Removes the 5px margin on small screens for tighter fit */
+            margin-bottom: 4px !important; /* Removes the 5px margin on small screens for tighter fit */
         }
     }
     </style>
