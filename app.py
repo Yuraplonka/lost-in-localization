@@ -150,7 +150,7 @@ st.markdown("""
     @media only screen and (max-width: 600px) {
         /* Fixes "Too Big" spacing on mobile by overriding global gap */
         div[data-testid="stVerticalBlock"] {
-            gap: 2px !important; /* <--- CHANGED: Tighter gap for mobile */
+            gap: 0px !important; /* <--- CHANGED: Tighter gap for mobile */
         }
         
         div.stButton > button {
