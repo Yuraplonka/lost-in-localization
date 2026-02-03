@@ -309,7 +309,7 @@ if st.session_state.current_level < len(levels):
                 
                 time.sleep(1)
                 st.session_state.current_level += 1
-                st.rerun(
+                st.rerun()
 
 else:
     st.title("JOB COMPLETE")
