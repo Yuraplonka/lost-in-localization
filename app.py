@@ -59,7 +59,6 @@ st.markdown("""
     html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"] {
         background-color: #0e1117 !important;
         overscroll-behavior: none;
-        min-height: 100vh !important;
     }
 
     /* 2. RESTORE MATRIX THEME (Green Text) */
