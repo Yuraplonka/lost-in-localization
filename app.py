@@ -123,7 +123,7 @@ st.markdown("""
         padding: 15px;
         border-radius: 5px;
         font-weight: bold;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         font-family: 'Courier New', Courier, monospace;
         /* Mobile Friendly: Allows text to wrap */
         height: auto;
