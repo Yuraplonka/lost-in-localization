@@ -55,16 +55,13 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* --- 1. STOP THE MOVING (The Lock) --- */
-    html, body {
-        overscroll-behavior: none !important; /* This stops the rubber-banding */
-        background-color: #0e1117 !important; /* Ensures background stays black */
+    /* --- 1. HIDE THE WHITE BOX (Visual Fix) --- */
+    /* We cannot stop the bounce on Streamlit Cloud, but we can paint the background black */
+    :root {
+        background-color: #0e1117;
     }
-    
-    /* Ensure the scrolling container respects the lock */
-    [data-testid="stAppViewContainer"] {
-        overscroll-behavior: none !important;
-        background-color: #0e1117 !important;
+    html, body {
+        background-color: #0e1117 !important; 
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
