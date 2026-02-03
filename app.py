@@ -55,14 +55,16 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* 1. GLOBAL BACKGROUND FIX (Fixes white box on mobile) */
-    html, body, [data-testid="stAppViewContainer"] {
+    /* 1. FORCE BLACK BACKGROUND (Fixes White Box on Mobile) */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #0e1117 !important;
-        font-family: 'Courier New', Courier, monospace;
     }
+
+    /* 2. RESTORE MATRIX THEME (Green Text) */
     .stApp {
         background-color: #0e1117;
-        color: #00ff00;
+        color: #00ff00 !important; /* <--- This puts the green text back */
+        font-family: 'Courier New', Courier, monospace;
     }
     
     /* 1. BUTTON CONTAINER (The Box) */
@@ -79,6 +81,9 @@ st.markdown("""
         color: #000000 !important;       /* Black Text */
         font-weight: 600 !important;     /* Max Bold */
         font-size: 18px !important;
+        text-align: left !important;     
+        line-height: 1.2 !important;     
+        word-break: break-word;
     }
 
     /* 3. HOVER STATE (Mouse Over) */
@@ -118,22 +123,28 @@ st.markdown("""
         padding: 15px;
         border-radius: 5px;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         font-family: 'Courier New', Courier, monospace;
         /* Mobile Friendly: Allows text to wrap */
         height: auto;
         min-height: 40px;
         display: flex;
         align-items: center;
+        line-height: 1.4;
     }
     
-    /* 6. MOBILE SPECIFIC TWEAKS */
+    /* 4. REDUCE GAP BETWEEN OPTIONS (Global) */
+    div[data-testid="column"] {
+        padding-bottom: 0px !important;
+    }
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.2rem !important; 
+    }
+
+    /* 5. MOBILE SPECIFIC TWEAKS */
     @media only screen and (max-width: 600px) {
         div.stButton > button {
-            margin-bottom: 0px !important; /* Tighter spacing on mobile */
-        }
-        [data-testid="column"] {
-            padding-bottom: 0px !important;
+            margin-bottom: 0px !important; /* Removes the 5px margin on small screens for tighter fit */
         }
     }
     </style>
