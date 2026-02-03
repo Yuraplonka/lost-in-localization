@@ -55,10 +55,14 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* 1. FORCE BLACK BACKGROUND (Fixes White Box on Mobile) */
+    /* 1. SAFARI WHITE BOX FIX (Safe Method) */
+    /* Paints the area behind the scroll bounce black */
+    html {
+        background-color: #0e1117 !important;
+    }
     html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"] {
         background-color: #0e1117 !important;
-        overscroll-behavior: none;
+        overscroll-behavior: none; /* Stops the bounce */
     }
 
     /* 2. RESTORE MATRIX THEME (Green Text) */
@@ -146,7 +150,7 @@ st.markdown("""
     @media only screen and (max-width: 600px) {
         /* Fixes "Too Big" spacing on mobile by overriding global gap */
         div[data-testid="stVerticalBlock"] {
-            gap: 6px !important; /* <--- CHANGED: Tighter gap for mobile */
+            gap: 2px !important; /* <--- CHANGED: Tighter gap for mobile */
         }
         
         div.stButton > button {
