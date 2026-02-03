@@ -55,10 +55,14 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
+    /* 1. GLOBAL BACKGROUND FIX (Fixes white box on mobile) */
+    html, body, [data-testid="stAppViewContainer"] {
+        background-color: #0e1117 !important;
+        font-family: 'Courier New', Courier, monospace;
+    }
     .stApp {
         background-color: #0e1117;
         color: #00ff00;
-        font-family: 'Courier New', Courier, monospace;
     }
     
     /* 1. BUTTON CONTAINER (The Box) */
@@ -67,6 +71,7 @@ st.markdown("""
         border: 2px solid #004400 !important;
         width: 100%;
         transition: all 0.2s ease;
+        margin-bottom: 5px !important; /* Reduces gap between buttons */
     }
 
     /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
@@ -103,6 +108,33 @@ st.markdown("""
     /* HIDE 'Press Enter to apply' */
     div[data-testid="InputInstructions"] > span:nth-child(1) {
         visibility: hidden;
+    }
+    
+    /* 4. NEW CORRUPTED STRING BOX (Responsive Height) */
+    .corrupted-box {
+        background-color: #ffcccc; /* Light Red Background */
+        color: #8b0000;            /* Dark Red Text */
+        border: 2px solid #ff0000;
+        padding: 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        font-family: 'Courier New', Courier, monospace;
+        /* Mobile Friendly: Allows text to wrap */
+        height: auto;
+        min-height: 55px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* 6. MOBILE SPECIFIC TWEAKS */
+    @media only screen and (max-width: 600px) {
+        div.stButton > button {
+            margin-bottom: 0px !important; /* Tighter spacing on mobile */
+        }
+        [data-testid="column"] {
+            padding-bottom: 0px !important;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -163,7 +195,13 @@ if st.session_state.current_level < len(levels):
     level_data = levels[st.session_state.current_level]
     
     st.subheader(f"Case #{st.session_state.current_level + 1}")
-    st.error(f'CORRUPTED STRING: "{level_data["glitch"]}"')
+    
+    # NEW RESPONSIVE BOX
+    st.markdown(f"""
+    <div class="corrupted-box">
+        CORRUPTED STRING: "{level_data['glitch']}"
+    </div>
+    """, unsafe_allow_html=True)
     
     st.write("Select the correct localized patch:")
     
