@@ -55,23 +55,29 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* --- 1. THE WHITE BOX FIX (The "Curtain") --- */
-    /* This creates a permanent black layer behind the app */
-    html::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: #0e1117;
-        z-index: -100; /* Puts it behind everything */
+    /* --- 1. THE ULTIMATE SAFARI FIX --- */
+    /* Forces the root document to be black, covering the overscroll area */
+    html {
+        background-color: #0e1117 !important;
     }
     
-    /* Standard Background Locking */
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    /* Forces body to stretch to the dynamic height of the screen */
+    body {
         background-color: #0e1117 !important;
-        overscroll-behavior: none; /* Stops the "rubber band" effect */
+        min-height: 100vh;
+        min-height: -webkit-fill-available; /* Critical for Safari */
+        overflow-x: hidden;
+    }
+    
+    /* Target the Streamlit container that actually scrolls */
+    [data-testid="stAppViewContainer"] {
+        background-color: #0e1117 !important;
+        min-height: 100dvh; /* Dynamic Viewport Height */
+    }
+    
+    /* Hide the standard header decoration if it leaks white color */
+    [data-testid="stHeader"] {
+        background-color: #0e1117 !important;
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
