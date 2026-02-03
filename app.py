@@ -55,10 +55,16 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* 1. FORCE BLACK BACKGROUND */
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    /* --- 1. STOP THE MOVING (The Lock) --- */
+    html, body {
+        overscroll-behavior: none !important; /* This stops the rubber-banding */
+        background-color: #0e1117 !important; /* Ensures background stays black */
+    }
+    
+    /* Ensure the scrolling container respects the lock */
+    [data-testid="stAppViewContainer"] {
+        overscroll-behavior: none !important;
         background-color: #0e1117 !important;
-        overscroll-behavior: none; 
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
