@@ -58,6 +58,7 @@ st.markdown("""
     /* 1. FORCE BLACK BACKGROUND (Fixes White Box on Mobile) */
     html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"] {
         background-color: #0e1117 !important;
+        overscroll-behavior: none;
     }
 
     /* 2. RESTORE MATRIX THEME (Green Text) */
@@ -73,7 +74,7 @@ st.markdown("""
         border: 2px solid #004400 !important;
         width: 100%;
         transition: all 0.2s ease;
-        margin-bottom: 8px !important; /* Reduces gap between buttons */
+        margin: 0px !important; /* Reduces gap between buttons */
     }
 
     /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
