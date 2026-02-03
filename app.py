@@ -274,6 +274,7 @@ if st.session_state.current_level < len(levels):
 
 else:
     st.title("JOB COMPLETE")
+    st.markdown("<br>", unsafe_allow_html=True)
     st.write(f"Final Score: {st.session_state.score} / {len(levels)}")
     
     # SAVE SCORE TO GOOGLE SHEETS
