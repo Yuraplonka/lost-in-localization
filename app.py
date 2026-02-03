@@ -112,8 +112,8 @@ st.markdown("""
     
     /* 4. NEW CORRUPTED STRING BOX (Responsive Height) */
     .corrupted-box {
-        background-color: #ffcccc; /* Light Red Background */
-        color: #8b0000;            /* Dark Red Text */
+        background-color: rgba(255, 75, 75, 0.1); /* Light Red Background */
+        color: #ff4b4b;            /* Dark Red Text */
         border: 2px solid #ff0000;
         padding: 15px;
         border-radius: 5px;
@@ -122,7 +122,7 @@ st.markdown("""
         font-family: 'Courier New', Courier, monospace;
         /* Mobile Friendly: Allows text to wrap */
         height: auto;
-        min-height: 55px;
+        min-height: 40px;
         display: flex;
         align-items: center;
     }
