@@ -55,112 +55,110 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* 1. SAFARI WHITE BOX FIX (Safe Method) */
-    /* Paints the area behind the scroll bounce black */
-    html {
+    /* 1. FORCE BLACK BACKGROUND (The "Nuclear Option" for Safari) */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #0e1117 !important;
-    }
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"] {
-        background-color: #0e1117 !important;
-        overscroll-behavior: none; /* Stops the bounce */
+        overscroll-behavior: none; /* Stops the "rubber band" white scroll effect */
     }
 
-    /* 2. RESTORE MATRIX THEME (Green Text) */
+    /* 2. GLOBAL TEXT & THEME (Matrix Green) */
     .stApp {
         background-color: #0e1117;
-        color: #00ff00 !important; /* <--- This puts the green text back */
+        color: #00ff00 !important;
         font-family: 'Courier New', Courier, monospace;
     }
-    
-    /* 1. BUTTON CONTAINER (The Box) */
+
+    /* 3. TITLE FIX (One Line on Mobile) */
+    h1 {
+        white-space: nowrap !important;
+    }
+    @media only screen and (max-width: 600px) {
+        h1 {
+            font-size: 1.8rem !important; /* Smaller size for phone */
+        }
+    }
+
+    /* 4. BUTTON STYLING (The Box & The Text) */
     div.stButton > button {
         background-color: #00ff00 !important; /* Neon Green */
         border: 2px solid #004400 !important;
         width: 100%;
         transition: all 0.2s ease;
-        margin: 0px !important; /* Reduces gap between buttons */
+        padding: 12px 15px !important;
+        margin: 0px !important; 
+        height: auto !important;
+        min-height: 50px;
     }
 
-    /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
+    /* Text inside the button */
     div.stButton > button p {
         color: #000000 !important;       /* Black Text */
-        font-weight: 600 !important;     /* Max Bold */
+        font-weight: 700 !important;     /* Max Bold */
         font-size: 18px !important;
         text-align: left !important;     
         line-height: 1.2 !important;     
         word-break: break-word;
     }
 
-    /* 3. HOVER STATE (Mouse Over) */
+    /* Hover Effects */
     div.stButton > button:hover {
-        background-color: #ffffff !important; /* Turns White */
+        background-color: #ffffff !important; 
         border-color: #00ff00 !important;
         transform: scale(1.02);
     }
-
-    /* 4. HOVER TEXT - Ensures text stays black on white background */
     div.stButton > button:hover p {
         color: #000000 !important;
     }
-    
-    /* FIX ALERT BOXES (Correct/Failed) */
-    div[data-testid="stAlert"] {
-        height: 40px !important;         /* Fixed height to match buttons */
-    }
 
-    /* Force the text inside to center properly */
-    div[data-testid="stAlert"] > div {
-        height: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-    
-    /* HIDE 'Press Enter to apply' */
-    div[data-testid="InputInstructions"] > span:nth-child(1) {
-        visibility: hidden;
-    }
-    
-    /* 4. NEW CORRUPTED STRING BOX (Responsive Height) */
+    /* 5. CORRUPTED STRING BOX (Responsive) */
     .corrupted-box {
-        background-color: rgba(255, 75, 75, 0.1); /* Light Red Background */
-        color: #ff4b4b;            /* Dark Red Text */
-        border: 2px solid #ff0000;
+        background-color: rgba(255, 75, 75, 0.1); /* Darker Red for Matrix Theme */
+        color: #ff4b4b;            
+        border: 2px solid #ff4b4b;
         padding: 15px;
         border-radius: 5px;
         font-weight: bold;
         margin-bottom: 20px;
         font-family: 'Courier New', Courier, monospace;
-        /* Mobile Friendly: Allows text to wrap */
         height: auto;
         min-height: 40px;
         display: flex;
         align-items: center;
         line-height: 1.4;
     }
+
+    /* 6. HIDE EXTRAS */
+    div[data-testid="InputInstructions"] > span:nth-child(1) {
+        visibility: hidden; /* Hide 'Press Enter to apply' */
+    }
     
-    /* 4. REDUCE GAP BETWEEN OPTIONS (Global) */
+    /* 7. SPACING FIXES (Crush the Gaps) */
+    /* Removes padding around columns */
     div[data-testid="column"] {
         padding-bottom: 0px !important;
+        margin-bottom: 0px !important;
     }
+    /* Removes margin below buttons */
+    .stButton {
+        margin-bottom: 0px !important;
+    }
+    
+    /* Global Vertical Gap (Desktop) */
     div[data-testid="stVerticalBlock"] {
         gap: 10px !important; 
     }
 
-    /* 5. MOBILE SPECIFIC TWEAKS (Only affects Mobile) */
+    /* 8. MOBILE SPECIFIC TWEAKS */
     @media only screen and (max-width: 600px) {
-        /* Fixes "Too Big" spacing on mobile by overriding global gap */
+        /* Ultra-tight spacing for mobile */
         div[data-testid="stVerticalBlock"] {
-            gap: 0px !important; /* <--- CHANGED: Tighter gap for mobile */
+            gap: 5px !important; 
         }
         
+        /* Ensure buttons don't have extra margins on phone */
         div.stButton > button {
-            margin-bottom: 0px !important; /* <--- CHANGED: Removed the 4px extra space */
+            margin-bottom: 0px !important;
         }
-    }
-    
-    /* This removes the default bottom margin */
-    .stButton {
-        margin-bottom: 0px !important;
     }
     </style>
     """, unsafe_allow_html=True)
