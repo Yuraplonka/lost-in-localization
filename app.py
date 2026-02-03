@@ -319,7 +319,7 @@ else:
             # Use st.markdown so the bolding renders correctly
             st.markdown(f"**#{rank + 1} {safe_name}** — {agent['Score']} pts")
     else:
-        st.write("Connecting to Global Database...")
+        st.write("Database Empty. Be the First!")
         
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("REBOOT SYSTEM"):
