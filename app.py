@@ -68,7 +68,7 @@ st.markdown("""
     /* shrink title ONLY on mobile */
     @media only screen and (max-width: 600px) {
         h1 {
-            font-size: 5.5vw !important; /* Smaller size for phone */
+            font-size: 10vw !important; /* Smaller size for phone */
         }
     }
     
