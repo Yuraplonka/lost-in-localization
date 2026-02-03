@@ -278,7 +278,8 @@ else:
     
     # SAVE SCORE TO GOOGLE SHEETS
     if not st.session_state.game_over:
-        save_score(st.session_state.player_name, st.session_state.score)
+        clean_name = st.session_state.player_name.strip()
+        save_score(clean_name, st.session_state.score)
         st.session_state.game_over = True
     
     # --- RANK LOGIC ---
@@ -312,9 +313,13 @@ else:
     
     if top_scores:
         for rank, agent in enumerate(top_scores):
-            st.write(f"**#{rank + 1} {agent['Player']}** - {agent['Score']} pts")
+            # FIX: Ensure name is a string and strip spaces again just in case
+            safe_name = str(agent['Player']).strip()
+            
+            # Use st.markdown so the bolding renders correctly
+            st.markdown(f"**#{rank + 1} {safe_name}** — {agent['Score']} pts")
     else:
-        st.write("Connecting to the Database...")
+        st.write("Connecting to Global Database...")
         
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("REBOOT SYSTEM"):
