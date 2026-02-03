@@ -55,37 +55,68 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* 1. FORCE BLACK BACKGROUND (The "Nuclear Option" for Safari) */
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-        background-color: #0e1117 !important;
-        overscroll-behavior: none; /* Stops the "rubber band" white scroll effect */
+    /* --- 1. FORCE BLACK BACKGROUND (The "Background Shield" for Safari) --- */
+    /* This creates a fixed black layer behind the app so overscroll is never white */
+    div::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #0e1117;
+        z-index: -1;
     }
     
-    /* 2. TITLE FIX (One Line on Mobile) */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        background-color: #0e1117 !important;
+        overscroll-behavior: none; 
+    }
+    
+    /* --- 2. TITLE FIX (One Line on Mobile) --- */
     h1 {
         white-space: nowrap !important; /* Force text to stay on one line */
     }
     /* shrink title ONLY on mobile */
     @media only screen and (max-width: 600px) {
         h1 {
-            font-size: 1.8rem !important; /* Smaller size for phone */
+            /* 8vw means "8% of screen width". Fits perfectly on one line. */
+            font-size: 8vw !important; 
         }
     }
-    
-    /* 3. RESULT MESSAGE FIX (Remove Giant Gap) */
-    /* This removes the gap between the Button and the Result Box on mobile */
-    div[data-testid="column"] {
-        margin-bottom: 0px !important;
-        padding-bottom: 0px !important;
+
+    /* --- 3. MOBILE VS PC MESSAGE LOGIC --- */
+    /* Default (PC): Hide the Mobile Top Alert */
+    .mobile-alert-box {
+        display: none;
     }
-    div[data-testid="stVerticalBlock"] {
-        gap: 0.5rem !important; /* Small gap between elements */
+
+    /* Mobile Rules */
+    @media only screen and (max-width: 600px) {
+        /* Show the Top Alert on Mobile */
+        .mobile-alert-box {
+            display: flex !important;
+            justify-content: center;
+            background-color: #ff4b4b; /* Red background */
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Hide the Side Column Alert on Mobile */
+        div[data-testid="column"] div[data-testid="stAlert"] {
+            display: none !important;
+        }
     }
+
+    /* --- YOUR EXISTING CODE BELOW --- */
 
     /* 2. RESTORE MATRIX THEME (Green Text) */
     .stApp {
         background-color: #0e1117;
-        color: #00ff00 !important; /* <--- This puts the green text back */
+        color: #00ff00 !important; 
         font-family: 'Courier New', Courier, monospace;
     }
     
@@ -95,10 +126,10 @@ st.markdown("""
         border: 2px solid #004400 !important;
         width: 100%;
         transition: all 0.2s ease;
-        margin: 0px !important; /* Reduces gap between buttons */
+        margin: 0px !important; 
     }
 
-    /* 2. BUTTON TEXT (The Words) - This fixes the bold issue */
+    /* 2. BUTTON TEXT (The Words) */
     div.stButton > button p {
         color: #000000 !important;       /* Black Text */
         font-weight: 600 !important;     /* Max Bold */
@@ -115,7 +146,7 @@ st.markdown("""
         transform: scale(1.02);
     }
 
-    /* 4. HOVER TEXT - Ensures text stays black on white background */
+    /* 4. HOVER TEXT */
     div.stButton > button:hover p {
         color: #000000 !important;
     }
@@ -147,7 +178,6 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 20px;
         font-family: 'Courier New', Courier, monospace;
-        /* Mobile Friendly: Allows text to wrap */
         height: auto;
         min-height: 40px;
         display: flex;
@@ -165,13 +195,12 @@ st.markdown("""
 
     /* 5. MOBILE SPECIFIC TWEAKS (Only affects Mobile) */
     @media only screen and (max-width: 600px) {
-        /* Fixes "Too Big" spacing on mobile by overriding global gap */
         div[data-testid="stVerticalBlock"] {
-            gap: 2px !important; /* <--- CHANGED: Tighter gap for mobile */
+            gap: 2px !important; /* Tighter gap for mobile */
         }
         
         div.stButton > button {
-            margin-bottom: 0px !important; /* <--- CHANGED: Removed the 4px extra space */
+            margin-bottom: 0px !important; 
         }
     }
     
@@ -239,7 +268,10 @@ if st.session_state.current_level < len(levels):
     
     st.subheader(f"Case #{st.session_state.current_level + 1}")
     
-    # NEW RESPONSIVE BOX
+    # 1. CREATE THE MOBILE PLACEHOLDER (Hidden on PC by CSS)
+    mobile_msg_container = st.empty()
+
+    # 2. SHOW CORRUPTED STRING
     st.markdown(f"""
     <div class="corrupted-box">
         CORRUPTED STRING: "{level_data['glitch']}"
@@ -248,29 +280,34 @@ if st.session_state.current_level < len(levels):
     
     st.write("Select the correct localized patch:")
     
-    # LOOP THROUGH OPTIONS
+    # 3. LOOP THROUGH OPTIONS
     for i, option in enumerate(level_data['options']):
-        # Create two columns: Left for Button (0.7), Right for Result (0.3)
-        col1, col2 = st.columns([0.8, 0.2])
+        # Create columns: PC uses this layout
+        col1, col2 = st.columns([0.75, 0.25])
         
         with col1:
-            # We use 'key' to ensure every button is unique
             clicked = st.button(option, key=f"btn_{st.session_state.current_level}_{i}")
             
         if clicked:
-            # If clicked, show the result in the RIGHT column (col2)
-            with col2:
-                if option == level_data['correct']:
+            if option == level_data['correct']:
+                with col2:
                     st.success("✅ CORRECT")
-                    time.sleep(1) # Let them see it for 1 second
-                    st.session_state.score += 1
-                    st.session_state.current_level += 1
-                    st.rerun()
-                else:
+                time.sleep(1) 
+                st.session_state.score += 1
+                st.session_state.current_level += 1
+                st.rerun()
+            else:
+                # --- DOUBLE MESSAGE LOGIC ---
+                # 1. Write to Top Placeholder (Shown ONLY on Mobile)
+                mobile_msg_container.markdown('<div class="mobile-alert-box">❌ FAILED</div>', unsafe_allow_html=True)
+                
+                # 2. Write to Side Column (Shown ONLY on PC)
+                with col2:
                     st.error("❌ FAILED")
-                    time.sleep(1) # Let them see it for 1 second
-                    st.session_state.current_level += 1
-                    st.rerun()
+                
+                time.sleep(1) 
+                st.session_state.current_level += 1
+                st.rerun()
 
 else:
     st.title("JOB COMPLETE")
