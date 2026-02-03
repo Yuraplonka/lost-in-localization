@@ -55,10 +55,23 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* 1. FORCE BLACK BACKGROUND (The "Nuclear Option" for Safari) */
+    /* --- 1. THE WHITE BOX FIX (The "Curtain") --- */
+    /* This creates a permanent black layer behind the app */
+    html::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #0e1117;
+        z-index: -100; /* Puts it behind everything */
+    }
+    
+    /* Standard Background Locking */
     html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #0e1117 !important;
-        overscroll-behavior: none; /* Stops the "rubber band" white scroll effect */
+        overscroll-behavior: none; /* Stops the "rubber band" effect */
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
