@@ -55,29 +55,31 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* --- 1. THE ULTIMATE SAFARI FIX --- */
-    /* Forces the root document to be black, covering the overscroll area */
-    html {
+    /* --- 1. THE ROOT CAUSE FIX (Safari Viewport) --- */
+    /* Targets the browser window itself, not just the website */
+    :root, html, body {
         background-color: #0e1117 !important;
+        height: 100% !important;
+        margin: 0 !important;
     }
     
-    /* Forces body to stretch to the dynamic height of the screen */
-    body {
-        background-color: #0e1117 !important;
-        min-height: 100vh;
-        min-height: -webkit-fill-available; /* Critical for Safari */
-        overflow-x: hidden;
-    }
-    
-    /* Target the Streamlit container that actually scrolls */
+    /* Forces the scrolling container to be black and match the root */
     [data-testid="stAppViewContainer"] {
         background-color: #0e1117 !important;
-        min-height: 100dvh; /* Dynamic Viewport Height */
+        /* This prevents the "bounce" that reveals the white background */
+        overscroll-behavior-y: none !important; 
     }
     
-    /* Hide the standard header decoration if it leaks white color */
-    [data-testid="stHeader"] {
-        background-color: #0e1117 !important;
+    /* Shield: A final fixed layer just in case */
+    div::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 120vh; /* Extra tall to cover toolbar movement */
+        background-color: #0e1117;
+        z-index: -999;
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
