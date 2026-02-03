@@ -302,6 +302,8 @@ else:
         st.warning(f"RANK: {final_rank}")
     else:
         st.error(f"RANK: {final_rank}")
+        
+    st.markdown("<br>", unsafe_allow_html=True)
 
     st.subheader("🏆 SCHOOL LEADERBOARD")
     
