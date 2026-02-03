@@ -55,31 +55,10 @@ def get_top_scores():
 # --- CUSTOM DESIGN ---
 st.markdown("""
     <style>
-    /* --- 1. THE ROOT CAUSE FIX (Safari Viewport) --- */
-    /* Targets the browser window itself, not just the website */
-    :root, html, body {
+    /* 1. FORCE BLACK BACKGROUND */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #0e1117 !important;
-        height: 100% !important;
-        margin: 0 !important;
-    }
-    
-    /* Forces the scrolling container to be black and match the root */
-    [data-testid="stAppViewContainer"] {
-        background-color: #0e1117 !important;
-        /* This prevents the "bounce" that reveals the white background */
-        overscroll-behavior-y: none !important; 
-    }
-    
-    /* Shield: A final fixed layer just in case */
-    div::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 120vh; /* Extra tall to cover toolbar movement */
-        background-color: #0e1117;
-        z-index: -999;
+        overscroll-behavior: none; 
     }
     
     /* 2. TITLE FIX (One Line on Mobile) */
